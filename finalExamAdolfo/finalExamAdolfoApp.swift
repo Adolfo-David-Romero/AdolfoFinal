@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct finalExamAdolfoApp: App {
+    @StateObject var viewModel: ProvincesViewModel
+    init(){
+        _viewModel = StateObject(wrappedValue: ProvincesViewModel())
+    }
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ProvincesListView().environmentObject(viewModel)
         }
     }
 }
