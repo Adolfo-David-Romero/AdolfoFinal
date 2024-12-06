@@ -17,8 +17,12 @@ struct ProvincesListView: View {
                         .foregroundColor(.red)
                 } else {
                     ForEach(vm.provincesList, id: \.self) { province in
-                        ProvinceComponentView(title: "Name:",response: "\(province.name)")
+                        
+                        ProvinceComponentView(title: "\(province.name)",response: "\(province.description)")
+                        //ProvinceComponentView(title: "Description",response: "\(province.description)")
+                        
                     }
+                    
 
                 }
             }

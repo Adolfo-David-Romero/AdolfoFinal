@@ -16,8 +16,8 @@ struct ProvinceComponentView: View {
                 Text(title + ": ").fontWeight(.semibold)
                 Text(response).font(.subheadline).fontWeight(.light)
             }
+            
         }
-        //NavigationLink
     }
 }
 

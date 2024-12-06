@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct ProvinceDetailsView: View {
+    @Binding var data: Province
     var body: some View {
         NavigationStack{
             Form{
@@ -19,5 +20,5 @@ struct ProvinceDetailsView: View {
 }
 
 #Preview {
-    ProvinceDetailsView()
+    //ProvinceDetailsView()
 }
