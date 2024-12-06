@@ -9,13 +9,13 @@
 import Foundation
 
 // MARK: - Provinces
-struct Provinces: Codable {
-    let country: String
+struct Provinces: Codable,Hashable {
+    //let country: String
     let provinces: [Province]
 }
 
 // MARK: - Province
-struct Province: Codable {
+struct Province: Codable, Hashable {
     let name: String
     let capitalCity: CapitalCity
     let population: Int
@@ -23,7 +23,7 @@ struct Province: Codable {
 }
 
 // MARK: - CapitalCity
-struct CapitalCity: Codable {
+struct CapitalCity: Codable, Hashable {
     let name: String
     let latitude, longitude: Double
 }

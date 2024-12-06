@@ -16,11 +16,10 @@ struct ProvincesListView: View {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
                 } else {
-                    ForEach(vm.provincesList , id: \.country){ provinces in
-                        
-                        Text("\(provinces.provinces)")
-                        
+                    ForEach(vm.provincesList, id: \.self) { province in
+                        ProvinceComponentView(title: "Name:",response: "\(province.name)")
                     }
+
                 }
             }
             .navigationTitle("ProvincesListView")

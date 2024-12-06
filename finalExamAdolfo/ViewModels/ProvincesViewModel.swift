@@ -8,7 +8,7 @@ import Foundation
 
 @MainActor
 class ProvincesViewModel : ObservableObject {
-    @Published var provincesList : [Provinces] = []
+    @Published var provincesList : [Province] = []
     @Published var errorMessage: String?
     @Published var currentLink: URL?
     init (){
@@ -53,7 +53,7 @@ class ProvincesViewModel : ObservableObject {
             do {
                 let province = try JSONDecoder().decode(Provinces.self, from: data)
                 DispatchQueue.main.async {
-                    self.provincesList.append(province)
+                    self.provincesList.append(contentsOf: province.provinces)
                     self.errorMessage = nil
                 }
             } catch {
