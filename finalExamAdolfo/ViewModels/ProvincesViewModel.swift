@@ -6,37 +6,62 @@
 //  #991555778
 import Foundation
 
-
+@MainActor
 class ProvincesViewModel : ObservableObject {
-    @Published var provinces : [Provinces] = []
-    func getProvince(){
-        let url = URL(string: "https://mohameom.dev.fast.sheridanc.on.ca/demo/provinces.json")
-        let task = URLSession.shared.dataTask(with: url!) { data, response , error in
-            
-            
-            guard error == nil else {
-                print("error \(String(describing: error))")
-                return
-            }
-            
-            guard let data = data else{
-                print(" error data not found")
-                return
-            }
-            do {
-                let provincesResult =  try JSONDecoder().decode([Provinces].self, from: data)
-                
-                print("number of qouts: \(provincesResult.count)")
-                DispatchQueue.main.async {
-                    self.provinces = provincesResult
-                }
-            }catch {
-                
-                print("error \(error)")
-            }
-        }
+    @Published var provincesList : [Provinces] = []
+    @Published var errorMessage: String?
+    @Published var currentLink: URL?
+    init (){
+        getProvince()
+        print("ViewModel: init() -> getProvince()")
+    }
+    func getProvince() {
+        provincesList = [] // Clear the current list to avoid duplication
         
-        task.resume()
+        let url = URL(string: "https://mohameom.dev.fast.sheridanc.on.ca/demo/provinces.json")!
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Error: \(error.localizedDescription)"
+                }
+                return
+            }
+            // Check if response is a valid HTTPURLResponse and log the status code
+            if let response = response as? HTTPURLResponse {
+                print("Status Code: \(response.statusCode)")
+                if response.statusCode != 200 {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Invalid response: Status Code \(response.statusCode)"
+                    }
+                    return
+                }
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received from server."
+                }
+                return
+            }
+            
+            //For debugging
+            if let rawResponse = String(data: data, encoding: .utf8) {
+                print("Raw Response: \(rawResponse)")
+            }
+            
+            do {
+                let province = try JSONDecoder().decode(Provinces.self, from: data)
+                DispatchQueue.main.async {
+                    self.provincesList.append(province)
+                    self.errorMessage = nil
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Failed to decode data: \(error.localizedDescription)"
+                }
+            }
+        }.resume()
     }
 }
 

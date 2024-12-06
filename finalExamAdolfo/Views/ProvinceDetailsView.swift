@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ProvinceDetailsView: View {
     var body: some View {
         NavigationStack{

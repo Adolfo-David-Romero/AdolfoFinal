@@ -8,17 +8,26 @@
 import SwiftUI
 
 struct ProvincesListView: View {
+    @EnvironmentObject var vm: ProvincesViewModel
     var body: some View {
-        @EnvironmentObject var vm : ProvincesViewModel
         NavigationStack{
             Form{
-                
-                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            }.navigationTitle("ProvincesListView")
+                if let errorMessage = vm.errorMessage {
+                    Text("Error: \(errorMessage)")
+                        .foregroundColor(.red)
+                } else {
+                    ForEach(vm.provincesList , id: \.country){ provinces in
+                        
+                        Text("\(provinces.provinces)")
+                        
+                    }
+                }
+            }
+            .navigationTitle("ProvincesListView")
         }
     }
 }
 
 #Preview {
-    ProvincesListView()
+    ProvincesListView().environmentObject(ProvincesViewModel())
 }
